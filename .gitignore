@@ -1,0 +1,14 @@
+node_modules/
+.next/
+.next-dev/
+.venv/
+.env
+.env.*
+!.env.example
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+*.pyc
+*.tsbuildinfo
+var/
+preview-runtime/

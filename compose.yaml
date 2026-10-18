@@ -1,0 +1,41 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: lankamacro
+      POSTGRES_USER: lankamacro
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-lankamacro_dev}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lankamacro -d lankamacro"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    environment:
+      DATABASE_URL: postgresql+psycopg://lankamacro:${POSTGRES_PASSWORD:-lankamacro_dev}@db:5432/lankamacro
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", ".venv/bin/python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8008/api/health')"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+      args:
+        BACKEND_URL: http://api:8008
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      api:
+        condition: service_healthy
+volumes:
+  postgres_data:

@@ -1,0 +1,10 @@
+FROM python:3.12-slim
+WORKDIR /app
+RUN pip install --no-cache-dir uv==0.12.23
+COPY pyproject.toml uv.lock ./
+RUN uv sync --frozen --no-dev
+COPY backend ./backend
+COPY data ./data
+RUN mkdir -p var && useradd -m appuser && chown -R appuser:appuser /app
+USER appuser
+CMD [".venv/bin/python", "-m", "uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "8008"]

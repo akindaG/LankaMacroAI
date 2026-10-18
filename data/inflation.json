@@ -1,0 +1,35 @@
+{
+  "source": {
+    "id": "dcs-ccpi-2026-09",
+    "title": "Colombo Consumer Price Index — September 2026",
+    "publisher": "Department of Census and Statistics, Sri Lanka",
+    "url": "https://www.statistics.gov.lk/WebReleases/CCPI_20260930E",
+    "release_date": "2026-09-30",
+    "reviewed_on": "2026-10-18",
+    "page": 4,
+    "table": "Table 03: Movements of the CCPI (Base: 2021=100)",
+    "file": "ccpi-september-2026.pdf",
+    "sha256": "614ca32cf76856585f2e9bf994faacc6274ca29667c9411cf5ff8e2dc3a28129",
+    "review_method": "Manual transcription and visual verification against physical page 4; PDF has no extractable text on that page."
+  },
+  "observations": [
+    {"period":"2025-09","headline":1.5,"food":2.9,"non_food":0.7,"index":193.7},
+    {"period":"2025-10","headline":2.1,"food":3.5,"non_food":1.4,"index":193.8},
+    {"period":"2025-11","headline":2.1,"food":3.0,"non_food":1.7,"index":193.4},
+    {"period":"2025-12","headline":2.1,"food":3.0,"non_food":1.8,"index":195.8},
+    {"period":"2026-01","headline":2.3,"food":3.3,"non_food":1.8,"index":197.0},
+    {"period":"2026-02","headline":1.6,"food":0.2,"non_food":2.3,"index":195.3},
+    {"period":"2026-03","headline":2.2,"food":0.7,"non_food":2.9,"index":195.8},
+    {"period":"2026-04","headline":5.4,"food":2.8,"non_food":6.8,"index":201.6},
+    {"period":"2026-05","headline":5.5,"food":0.9,"non_food":7.8,"index":203.4},
+    {"period":"2026-06","headline":6.8,"food":3.6,"non_food":8.4,"index":207.7},
+    {"period":"2026-07","headline":7.3,"food":6.3,"non_food":7.8,"index":208.2},
+    {"period":"2026-08","headline":8.0,"food":8.5,"non_food":7.7,"index":208.8},
+    {"period":"2026-09","headline":8.0,"food":8.7,"non_food":7.7,"index":209.1}
+  ],
+  "evidence": [
+    {"id":"inflation-definition","title":"How year-on-year inflation is defined","text":"Year-on-year inflation measures the percentage change in the CCPI over the previous 12 months. The 12-month moving average is a different measure and must not be substituted for year-on-year inflation.","page":4},
+    {"id":"september-summary","title":"September 2026 release summary","text":"Headline CCPI year-on-year inflation was 8.0% in September 2026, unchanged from August. Food inflation increased from 8.5% to 8.7%; non-food inflation remained 7.7%.","page":4},
+    {"id":"series-definition","title":"Measure and coverage","text":"Table 03 reports the Colombo Consumer Price Index with base 2021=100, plus headline, food and non-food year-on-year inflation. CCPI and NCPI are distinct indices.","page":4}
+  ]
+}

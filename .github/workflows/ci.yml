@@ -1,0 +1,66 @@
+name: Verify LankaMacro AI
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install uv==0.12.23
+      - run: uv sync --frozen
+      - run: uv run ruff check backend tests
+      - run: uv run ruff format --check backend tests
+      - run: uv run python -m pytest -q
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+  postgres:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_DB: lankamacro
+          POSTGRES_USER: lankamacro
+          POSTGRES_PASSWORD: ci_only_password
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U lankamacro -d lankamacro"
+          --health-interval 5s --health-timeout 5s --health-retries 15
+    env:
+      DATABASE_URL: postgresql+psycopg://lankamacro:ci_only_password@localhost:5432/lankamacro
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install uv==0.12.23
+      - run: uv sync --frozen
+      - name: Publish reviewed snapshot twice and verify PostgreSQL values
+        run: |
+          uv run python -m backend.seed
+          uv run python -m backend.seed
+          uv run python - <<'PY'
+          from decimal import Decimal
+          from sqlalchemy import func, select
+          from sqlalchemy.orm import Session
+          from backend.database import engine, Observation
+          with Session(engine) as db:
+              assert db.scalar(select(func.count()).select_from(Observation)) == 52
+              assert db.get(Observation, ('2026-09', 'headline')).value == Decimal('8.0000')
+          PY
